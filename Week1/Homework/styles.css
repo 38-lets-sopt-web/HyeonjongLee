@@ -39,6 +39,59 @@ body {
   transform: translateY(-2px);
 }
 
+#content {
+  display: flex;
+  margin-top: 75px;
+}
+
+#nav {
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+  width: 160px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin: 25px 40px 0 20px;
+  border-radius: 10px;
+}
+
+#nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+#nav ul li {
+  padding: 10px 20px;
+  width: 100%;
+  text-align: center;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+#nav ul li:hover {
+  cursor: pointer;
+  background-color: rgb(206, 238, 238);
+  border-radius: 20px;
+}
+
+#nav ul li:hover:first-child {
+  border-radius: 20px 20px 0 0;
+}
+
+#nav ul li:hover:last-child {
+  border-radius: 0 0 20px 20px;
+}
+
+#nav ul li a {
+  text-decoration: none;
+  color: black;
+  white-space: nowrap;
+}
 
 
 
