@@ -289,3 +289,12 @@ body {
   content: " ✅";
   padding-left: 10px;
 }
+
+footer {
+  background-color: rgb(163, 215, 238);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  font-weight: bold;
+}
