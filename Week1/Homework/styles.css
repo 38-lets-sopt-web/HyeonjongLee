@@ -145,3 +145,27 @@ body {
 .photo-item:hover img {
   transform: scale(1.05);
 }
+
+#like {
+  margin-bottom: 80px;
+}
+
+#like h3 {
+  margin-bottom: 10px;
+}
+
+.like-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  scroll-snap-type: x proximity;
+}
+
+.like-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.like-scroll img {
+  border-radius: 10px;
+  scroll-snap-align: start;
+}
