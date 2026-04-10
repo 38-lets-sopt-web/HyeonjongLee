@@ -1,0 +1,49 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: rgb(192, 224, 236);
+  scroll-behavior: smooth;
+}
+
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 75px;
+  z-index: 100;
+  padding: 0 5%;
+  background-color: rgb(163, 215, 238);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#header img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  opacity: 0.8;
+}
+
+#header img:hover {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+
+
+
+
+
+
+
+
