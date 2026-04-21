@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Budget Book</title>
+  </head>
+  <body>
+    <header id="header">
+      <img id="refresh-icon" src="./images/sopt.png" alt="sopt" />
+      <div class="title">Lee Hyeon Jong</div>
+      <div class="text">SOPT 38th WEB</div>
+    </header>
+    <main id="main">
+      <section id="filter">
+        <h3>검색 필터</h3>
+        <div class="filter-grid">
+          <div class="filter-item">
+            <label for="title">제목</label>
+            <input id="title" name="title" placeholder="내역을 입력하세요" />
+          </div>
+          <div class="filter-item">
+            <label for="type">유형</label>
+            <select name="type" id="type">
+              <option value="all">전체</option>
+              <option value="income">수입</option>
+              <option value="expense">지출</option>
+            </select>
+          </div>
+          <div class="filter-item">
+            <label for="category">카테고리</label>
+            <select name="category" id="category">
+              <option value="all">전체</option>
+              <option value="food">식비</option>
+              <option value="transport">교통</option>
+              <option value="culture">문화생활</option>
+              <option value="health">의료/건강</option>
+              <option value="shopping">쇼핑</option>
+            </select>
+          </div>
+          <div class="filter-item">
+            <label for="pay">결제수단</label>
+            <select name="pay" id="pay">
+              <option value="all">전체</option>
+              <option value="card">카드</option>
+              <option value="cash">현금</option>
+              <option value="transfer">계좌이체</option>
+            </select>
+          </div>
+          <button type="button" class="filter-item">적용</button>
+          <button type="button" class="filter-item">초기화</button>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="index.js"></script>
+  </body>
+</html>
