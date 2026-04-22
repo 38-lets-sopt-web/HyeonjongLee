@@ -128,3 +128,75 @@ button.filter-item {
 button.filter-item:hover {
   opacity: 0.9;
 }
+
+#table {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.table-header select {
+  height: 35px;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+.table-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.table-buttons button {
+  height: 36px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+.table-buttons button:hover {
+  opacity: 0.9;
+}
+
+#budget-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#budget-table th,
+#budget-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid rgb(224, 223, 223);
+  font-size: 12px;
+}
+
+#budget-table th {
+  font-weight: 600;
+  color: #333;
+}
+
+#budget-table #total-row td {
+  font-weight: 600;
+}
+
+.amount-plus {
+  color: blue;
+}
+
+.amount-minus {
+  color: red;
+}

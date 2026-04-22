@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles.css" />
-    <title>Budget Book</title>
+    <title>가계부</title>
   </head>
   <body>
     <header id="header">
@@ -32,27 +32,62 @@
             <label for="category">카테고리</label>
             <select name="category" id="category">
               <option value="all">전체</option>
-              <option value="food">식비</option>
-              <option value="transport">교통</option>
-              <option value="culture">문화생활</option>
-              <option value="health">의료/건강</option>
-              <option value="shopping">쇼핑</option>
+              <option value="식비">식비</option>
+              <option value="교통">교통</option>
+              <option value="생활">생활</option>
+              <option value="문화">문화</option>
+              <option value="월급">월급</option>
+              <option value="기타">기타</option>
             </select>
           </div>
           <div class="filter-item">
             <label for="pay">결제수단</label>
             <select name="pay" id="pay">
               <option value="all">전체</option>
-              <option value="card">카드</option>
-              <option value="cash">현금</option>
-              <option value="transfer">계좌이체</option>
+              <option value="신용카드">신용카드</option>
+              <option value="체크카드">체크카드</option>
+              <option value="현금">현금</option>
+              <option value="기타">기타</option>
             </select>
           </div>
           <button type="button" class="filter-item">적용</button>
           <button type="button" class="filter-item">초기화</button>
         </div>
       </section>
+      <section id="table">
+        <div class="table-header">
+          <select id="sort">
+            <option value="date-desc">날짜 내림차순</option>
+            <option value="date-asc">날짜 오름차순</option>
+          </select>
+          <div class="table-buttons">
+            <button type="button" id="delete-btn">선택 삭제</button>
+            <button type="button" id="add-btn">추가</button>
+          </div>
+        </div>
+        <table id="budget-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="check-all" /></th>
+              <th>제목</th>
+              <th>금액</th>
+              <th>날짜</th>
+              <th>카테고리</th>
+              <th>결제수단</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+          <tfoot>
+            <tr id="total-row">
+              <td colspan="2">total</td>
+              <td id="total-amount"></td>
+              <td colspan="3"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
     </main>
+    <script src="data.js"></script>
     <script type="module" src="index.js"></script>
   </body>
 </html>
