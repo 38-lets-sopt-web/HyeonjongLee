@@ -139,17 +139,9 @@ button.filter-item:hover {
 
 .table-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 15px;
-}
-
-.table-header select {
-  height: 35px;
-  padding: 0 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  outline: none;
 }
 
 .table-buttons {
@@ -199,4 +191,78 @@ button.filter-item:hover {
 
 .amount-minus {
   color: red;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-box {
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.modal-item label {
+  width: 60px;
+}
+
+.modal-item input,
+.modal-item select {
+  flex: 1;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+}
+
+#modal-add {
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
 }
