@@ -11,7 +11,7 @@ body {
   background-color: rgb(214, 209, 209);
 }
 
-#header {
+header {
   position: fixed;
   top: 0;
   left: 0;
@@ -26,7 +26,7 @@ body {
   align-items: center;
 }
 
-#header img {
+header img {
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -41,6 +41,9 @@ body {
 
 #refresh-icon {
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
 }
 
 .title {
@@ -49,6 +52,17 @@ body {
 
 .text {
   text-align: right;
+}
+.btn-primary {
+  border: none;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
 }
 
 #filter {
@@ -116,17 +130,8 @@ body {
 button.filter-item {
   width: 100%;
   height: 40px;
-  border: none;
-  border-radius: 5px;
-  background-color: black;
-  color: white;
   font-size: 15px;
   font-weight: 500;
-  cursor: pointer;
-}
-
-button.filter-item:hover {
-  opacity: 0.9;
 }
 
 #table {
@@ -152,15 +157,6 @@ button.filter-item:hover {
 .table-buttons button {
   height: 36px;
   padding: 0 16px;
-  border: none;
-  border-radius: 5px;
-  background-color: black;
-  color: white;
-  cursor: pointer;
-}
-
-.table-buttons button:hover {
-  opacity: 0.9;
 }
 
 #budget-table {
@@ -259,10 +255,5 @@ button.filter-item:hover {
 #modal-add {
   width: 100%;
   height: 40px;
-  border: none;
-  border-radius: 5px;
-  background-color: black;
-  color: white;
   font-size: 15px;
-  cursor: pointer;
 }

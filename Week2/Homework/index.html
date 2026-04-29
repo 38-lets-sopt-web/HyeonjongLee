@@ -7,15 +7,17 @@
     <title>가계부</title>
   </head>
   <body>
-    <header id="header">
-      <img id="refresh-icon" src="./images/sopt.png" alt="sopt" />
-      <div class="title">Lee Hyeon Jong</div>
-      <div class="text">SOPT 38th WEB</div>
+    <header>
+      <button type="button" id="refresh-icon">
+        <img src="./images/sopt.png" alt="sopt" />
+      </button>
+      <p class="title">Lee Hyeon Jong</p>
+      <p class="text">SOPT 38th WEB</p>
     </header>
     <main id="main">
       <section id="filter">
         <h3>검색 필터</h3>
-        <div class="filter-grid">
+        <form id="filter-form" class="filter-grid">
           <div class="filter-item">
             <label for="title">제목</label>
             <input id="title" name="title" placeholder="내역을 입력하세요" />
@@ -50,26 +52,40 @@
               <option value="기타">기타</option>
             </select>
           </div>
-          <button type="button" class="filter-item">적용</button>
-          <button type="button" class="filter-item">초기화</button>
-        </div>
+          <button
+            type="submit"
+            id="filter-apply-button"
+            class="filter-item btn-primary"
+          >
+            적용
+          </button>
+          <button
+            type="reset"
+            id="filter-reset-button"
+            class="filter-item btn-primary"
+          >
+            초기화
+          </button>
+        </form>
       </section>
       <section id="table">
         <div class="table-header">
           <div class="table-buttons">
-            <button type="button" id="delete-btn">선택 삭제</button>
-            <button type="button" id="add-btn">추가</button>
+            <button type="button" id="delete-btn" class="btn-primary">
+              선택 삭제
+            </button>
+            <button type="button" id="add-btn" class="btn-primary">추가</button>
           </div>
         </div>
         <table id="budget-table">
           <thead>
             <tr>
-              <th></th>
-              <th>제목</th>
-              <th>금액</th>
-              <th>날짜</th>
-              <th>카테고리</th>
-              <th>결제수단</th>
+              <th scope="col"></th>
+              <th scope="col">제목</th>
+              <th scope="col">금액</th>
+              <th scope="col">날짜</th>
+              <th scope="col">카테고리</th>
+              <th scope="col">결제수단</th>
             </tr>
           </thead>
           <tbody id="table-body"></tbody>
@@ -83,19 +99,24 @@
         </table>
       </section>
     </main>
-    <div id="modal" class="modal-overlay hidden">
+    <div
+      id="modal"
+      class="modal-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+    >
       <div class="modal-box">
         <div class="modal-header">
           <h3>항목 추가</h3>
-          <button id="modal-close">✕</button>
+          <button type="button" id="modal-close">✕</button>
         </div>
-        <div class="modal-body">
+        <form id="modal-form" class="modal-body">
           <div class="modal-item">
-            <label>제목</label>
+            <label for="modal-title">제목</label>
             <input id="modal-title" placeholder="제목을 입력하세요" />
           </div>
           <div class="modal-item">
-            <label>유형</label>
+            <label for="modal-type">유형</label>
             <select id="modal-type">
               <option value="">선택</option>
               <option value="income">수입</option>
@@ -103,7 +124,7 @@
             </select>
           </div>
           <div class="modal-item">
-            <label>금액</label>
+            <label for="modal-amount">금액</label>
             <input
               id="modal-amount"
               type="number"
@@ -111,11 +132,11 @@
             />
           </div>
           <div class="modal-item">
-            <label>날짜</label>
+            <label for="modal-date">날짜</label>
             <input id="modal-date" type="date" />
           </div>
           <div class="modal-item">
-            <label>카테고리</label>
+            <label for="modal-category">카테고리</label>
             <select id="modal-category">
               <option value="">선택</option>
               <option value="식비">식비</option>
@@ -127,7 +148,7 @@
             </select>
           </div>
           <div class="modal-item">
-            <label>결제수단</label>
+            <label for="modal-pay">결제수단</label>
             <select id="modal-pay">
               <option value="">선택</option>
               <option value="신용카드">신용카드</option>
@@ -136,11 +157,10 @@
               <option value="기타">기타</option>
             </select>
           </div>
-        </div>
-        <button id="modal-add">추가</button>
+          <button type="submit" id="modal-add" class="btn-primary">추가</button>
+        </form>
       </div>
     </div>
-    <script src="data.js"></script>
     <script type="module" src="index.js"></script>
   </body>
 </html>

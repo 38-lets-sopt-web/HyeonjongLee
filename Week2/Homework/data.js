@@ -1,5 +1,4 @@
-// 데이터
-const data = [
+export const data = [
   {
     id: 1,
     title: "월급",
