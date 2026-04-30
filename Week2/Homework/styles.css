@@ -1,0 +1,259 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(214, 209, 209);
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 75px;
+  z-index: 100;
+  padding: 0 5%;
+  background-color: rgb(34, 37, 69);
+  color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+}
+
+header img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#main {
+  width: 70%;
+  margin: 0 auto;
+  padding-top: 95px;
+}
+
+#refresh-icon {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.title {
+  text-align: center;
+}
+
+.text {
+  text-align: right;
+}
+.btn-primary {
+  border: none;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+#filter {
+  background-color: white;
+  border-radius: 10px;
+  padding: 25px;
+}
+
+#filter h3 {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.filter-item:nth-child(1) {
+  grid-column: span 6;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.filter-item:nth-child(2),
+.filter-item:nth-child(3),
+.filter-item:nth-child(4) {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.filter-item:nth-child(5),
+.filter-item:nth-child(6) {
+  grid-column: span 3;
+}
+
+.filter-item label {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: #333;
+}
+
+.filter-item input,
+.filter-item select {
+  flex: 1;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+}
+
+.filter-item input:focus,
+.filter-item select:focus {
+  border-color: black;
+}
+
+button.filter-item {
+  width: 100%;
+  height: 40px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+#table {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.table-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.table-buttons button {
+  height: 36px;
+  padding: 0 16px;
+}
+
+#budget-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#budget-table th,
+#budget-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid rgb(224, 223, 223);
+  font-size: 12px;
+}
+
+#budget-table th {
+  font-weight: 600;
+  color: #333;
+}
+
+#budget-table #total-row td {
+  font-weight: 600;
+}
+
+.amount-plus {
+  color: blue;
+}
+
+.amount-minus {
+  color: red;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-box {
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.modal-item label {
+  width: 60px;
+}
+
+.modal-item input,
+.modal-item select {
+  flex: 1;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+}
+
+#modal-add {
+  width: 100%;
+  height: 40px;
+  font-size: 15px;
+}
