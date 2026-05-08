@@ -2,11 +2,22 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import theme from "../styles/theme";
+import { postSignIn } from "../api/auth";
 
 function LoginPage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      const response = await postSignIn(username, password);
+      localStorage.setItem("userId", String(response.data.userId));
+      navigate("/mypage");
+    } catch {
+      alert("로그인에 실패했습니다.");
+    }
+  };
 
   return (
     <Container>
@@ -28,7 +39,7 @@ function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </Field>
-      <LoginButton>로그인</LoginButton>
+      <LoginButton onClick={handleLogin}>로그인</LoginButton>
       <SignUpButton onClick={() => navigate("/signup")}>회원가입</SignUpButton>
     </Container>
   );
