@@ -11,7 +11,7 @@ export const postSignUp = async (data: {
   name: string;
   email: string;
   age: number;
-  part: "iOS" | "Android" | "Web" | "Server";
+  part: "iOS" | "안드로이드" | "웹";
 }) => {
   const response = await instance.post("/auth/signup", data);
   return response.data;
