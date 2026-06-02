@@ -1,11 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import type { Movie } from "../types/movie";
+import { POSTER_BASE_URL } from "../constants/image";
 
 interface MovieCardProps {
   movie: Movie;
 }
-
-const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
 const MovieCard = ({ movie }: MovieCardProps) => {
   const navigate = useNavigate();
@@ -13,17 +12,22 @@ const MovieCard = ({ movie }: MovieCardProps) => {
   return (
     <div
       onClick={() => navigate(`/${movie.id}`)}
-      className="cursor-pointer rounded-lg overflow-hidden bg-white shadow hover:scale-105 hover:shadow-lg transition-transform duration-200"
+      className="cursor-pointer group relative rounded-lg overflow-hidden bg-zinc-900"
     >
       <img
-        src={`${IMAGE_BASE_URL}${movie.poster_path}`}
+        src={`${POSTER_BASE_URL}${movie.poster_path}`}
         alt={movie.title}
-        className="w-full h-64 object-cover"
+        className="w-full aspect-[2/3] object-cover group-hover:scale-105 transition-transform duration-300"
       />
-      <div className="p-3">
-        <h3 className="font-bold text-sm truncate">{movie.title}</h3>
-        <p className="text-xs text-gray-500 mt-1">{movie.release_date}</p>
-        <p className="text-xs text-gray-600 mt-2 line-clamp-3">{movie.overview}</p>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+        <h3 className="font-semibold text-sm text-white truncate">
+          {movie.title}
+        </h3>
+        <p className="text-xs text-zinc-400 mt-0.5">{movie.release_date}</p>
+        <p className="text-xs text-zinc-300 mt-1 line-clamp-2">
+          {movie.overview}
+        </p>
       </div>
     </div>
   );

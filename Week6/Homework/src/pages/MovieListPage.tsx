@@ -22,13 +22,15 @@ const MovieListPage = () => {
   const [voteFilter, setVoteFilter] = useState<VoteOption>(VOTE_OPTIONS[0]);
   const observerRef = useRef<HTMLDivElement>(null);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["movies", voteFilter],
-    queryFn: ({ pageParam }) => getMovies(pageParam, voteFilter.min, voteFilter.max),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) =>
-      lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["movies", voteFilter],
+      queryFn: ({ pageParam }) =>
+        getMovies(pageParam, voteFilter.min, voteFilter.max),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) =>
+        lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
+    });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,7 +39,7 @@ const MovieListPage = () => {
           fetchNextPage();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (observerRef.current) observer.observe(observerRef.current);
@@ -47,31 +49,44 @@ const MovieListPage = () => {
   const movies = data?.pages.flatMap((page) => page.results) ?? [];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Movie Explorer</h1>
-      <select
-        value={voteFilter.label}
-        onChange={(e) => {
-          const selected = VOTE_OPTIONS.find((o) => o.label === e.target.value);
-          if (selected) setVoteFilter(selected);
-        }}
-        className="mb-6 border border-gray-300 rounded px-3 py-2 text-sm"
-      >
-        {VOTE_OPTIONS.map((option) => (
-          <option key={option.label} value={option.label}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
+    <div className="bg-zinc-950 min-h-screen text-white">
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        <h1 className="text-3xl font-bold mb-2 tracking-tight">
+          Movie Explorer
+        </h1>
+        <p className="text-zinc-500 text-sm mb-8">인기 영화를 둘러보세요</p>
+
+        {/* 필터 */}
+        <div className="flex gap-2 mb-8 flex-wrap">
+          {VOTE_OPTIONS.map((option) => (
+            <button
+              key={option.label}
+              onClick={() => setVoteFilter(option)}
+              className={`text-sm px-4 py-1.5 rounded-full border transition-colors ${
+                voteFilter.label === option.label
+                  ? "bg-white text-zinc-900 border-white font-semibold"
+                  : "border-zinc-700 text-zinc-400 hover:border-zinc-400 hover:text-white"
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+
+        {/* 영화 그리드 */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+
+        <div ref={observerRef} className="h-10 mt-8" />
+        {isFetchingNextPage && (
+          <p className="text-center text-zinc-600 text-sm py-4">
+            불러오는 중...
+          </p>
+        )}
       </div>
-      <div ref={observerRef} className="h-10 mt-8" />
-      {isFetchingNextPage && (
-        <p className="text-center text-gray-500 text-sm">불러오는 중...</p>
-      )}
     </div>
   );
 };
