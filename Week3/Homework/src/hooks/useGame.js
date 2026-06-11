@@ -1,46 +1,92 @@
 import { useState, useEffect, useRef } from "react";
 
+const LEVEL_CONFIG = {
+  1: { size: 4, time: 15, cols: 2 },
+  2: { size: 9, time: 20, cols: 3 },
+  3: { size: 16, time: 30, cols: 4 },
+};
+
 export function useGame() {
+  const [level, setLevel] = useState(1);
   const [gameState, setGameState] = useState("waiting");
   const [score, setScore] = useState(0);
   const [success, setSuccess] = useState(0);
   const [fail, setFail] = useState(0);
-  const [time, setTime] = useState(15);
-  const [holeState, setHoleState] = useState(Array(4).fill(null));
+  const [time, setTime] = useState(LEVEL_CONFIG[1].time);
+  const [holeState, setHoleState] = useState(Array(LEVEL_CONFIG[1].size).fill(null));
   const [message, setMessage] = useState("시작 버튼을 누르면 시작합니다.");
+  const [showModal, setShowModal] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
 
   const gameStateRef = useRef("waiting");
   const scoreRef = useRef(0);
   const successRef = useRef(0);
   const failRef = useRef(0);
-  const timeRef = useRef(15);
+  const timeRef = useRef(LEVEL_CONFIG[1].time);
+  const levelRef = useRef(1);
 
+  // 타이머 종료 시 (점수 저장 + 모달)
   const endGame = () => {
     gameStateRef.current = "waiting";
     setGameState("waiting");
-    setHoleState(Array(4).fill(null));
+    setHoleState(Array(LEVEL_CONFIG[levelRef.current].size).fill(null));
 
-    // 점수가 0보다 크면 저장
     if (scoreRef.current > 0) {
       const records = JSON.parse(localStorage.getItem("mole-records") || "[]");
       records.push({
         score: scoreRef.current,
-        level: 1,
+        level: levelRef.current,
         timestamp: new Date().toLocaleString("ko-KR"),
       });
-      records.sort((a, b) => b.score - a.score); // 점수 기준으로 정렬
+      // 레벨 내림차순, 같은 레벨에서는 점수 내림차순
+      records.sort((a, b) => {
+        if (b.level !== a.level) return b.level - a.level;
+        return b.score - a.score;
+      });
       localStorage.setItem("mole-records", JSON.stringify(records));
     }
-    // 최종 점수 alert
-    alert(`게임 종료!\n 최종 점수: ${scoreRef.current}점\n 리셋 중 ...`);
+
+    setFinalScore(scoreRef.current);
+    setShowModal(true);
   };
 
-  // 스폰이랑 합칠 시 타이머 오차 발생
+  // 모달 확인 버튼
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  // 중단 버튼 - 저장 없이 즉시 초기화
+  const handleStop = () => {
+    if (gameStateRef.current !== "playing") return;
+    gameStateRef.current = "waiting";
+    scoreRef.current = 0;
+    successRef.current = 0;
+    failRef.current = 0;
+    timeRef.current = LEVEL_CONFIG[levelRef.current].time;
+    setGameState("waiting");
+    setScore(0);
+    setSuccess(0);
+    setFail(0);
+    setTime(LEVEL_CONFIG[levelRef.current].time);
+    setHoleState(Array(LEVEL_CONFIG[levelRef.current].size).fill(null));
+    setMessage("시작 버튼을 누르면 시작합니다.");
+  };
+
+  // 레벨 변경 (게임 중 변경 불가)
+  const handleLevelChange = (newLevel) => {
+    if (gameStateRef.current === "playing") return;
+    levelRef.current = newLevel;
+    setLevel(newLevel);
+    setTime(LEVEL_CONFIG[newLevel].time);
+    timeRef.current = LEVEL_CONFIG[newLevel].time;
+    setHoleState(Array(LEVEL_CONFIG[newLevel].size).fill(null));
+  };
+
+  // 타이머
   useEffect(() => {
     if (gameState !== "playing") return;
 
     const timer = setInterval(() => {
-      // 게임이 종료 되었는데 한번 더 실행되는 경우를 막기 위해
       if (gameStateRef.current !== "playing") return;
       timeRef.current -= 1;
       setTime(timeRef.current);
@@ -52,16 +98,18 @@ export function useGame() {
     return () => clearInterval(timer);
   }, [gameState]);
 
-  // 두더지 폭탄 스폰
+  // 두더지 / 폭탄 스폰
   useEffect(() => {
     if (gameState !== "playing") return;
 
+    const config = LEVEL_CONFIG[levelRef.current];
+
     const spawnTimer = setInterval(() => {
-      const idx = Math.floor(Math.random() * 4);
+      const idx = Math.floor(Math.random() * config.size);
       const type = Math.random() < 0.7 ? "mole" : "bomb";
 
       setHoleState((prev) => {
-        if (prev[idx] !== null) return prev; // 이미 차있으면 스킵
+        if (prev[idx] !== null) return prev;
         const next = [...prev];
         next[idx] = type;
         return next;
@@ -98,7 +146,6 @@ export function useGame() {
         return next;
       });
 
-      // hit 700ms 후 구멍을 null로
       setTimeout(() => {
         setHoleState((prev) => {
           const next = [...prev];
@@ -123,26 +170,24 @@ export function useGame() {
 
   // 시작 버튼 클릭
   const handleStart = () => {
+    const config = LEVEL_CONFIG[levelRef.current];
     scoreRef.current = 0;
     successRef.current = 0;
     failRef.current = 0;
     gameStateRef.current = "playing";
-    timeRef.current = 15;
+    timeRef.current = config.time;
     setScore(0);
     setSuccess(0);
     setFail(0);
-    setTime(15);
-    setHoleState(Array(4).fill(null));
+    setTime(config.time);
+    setHoleState(Array(config.size).fill(null));
     setGameState("playing");
-    setMessage("시작 버튼을 누르면 시작합니다.");
+    setMessage("게임이 시작되었습니다!");
   };
 
-  // 정지 버튼 클릭
-  const handleStop = () => {
-    if (gameStateRef.current !== "playing") return;
-    endGame();
-  };
   return {
+    level,
+    cols: LEVEL_CONFIG[level].cols,
     gameState,
     score,
     success,
@@ -150,8 +195,12 @@ export function useGame() {
     time,
     holeState,
     message,
+    showModal,
+    finalScore,
     handleStart,
     handleStop,
     handleHoleClick,
+    handleLevelChange,
+    handleModalClose,
   };
 }
