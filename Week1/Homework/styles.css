@@ -180,21 +180,33 @@ body {
 }
 
 .like-scroll {
+  overflow: hidden;
+}
+
+.scroll-track {
   display: flex;
-  overflow-x: auto;
-  gap: 10px;
-  scroll-snap-type: x proximity;
+  width: max-content;
+  animation: banner-scroll 28s linear infinite;
 }
 
-.like-scroll::-webkit-scrollbar {
-  display: none;
+.like-scroll:hover .scroll-track {
+  animation-play-state: paused;
 }
 
-.like-scroll img {
+.scroll-track img {
   height: 200px;
   width: auto;
   border-radius: 10px;
-  scroll-snap-align: start;
+  margin-right: 10px;
+}
+
+@keyframes banner-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 #hobby {
@@ -254,14 +266,8 @@ body {
   border-radius: 10px;
   cursor: pointer;
   transition:
-    opacity 0.2s,
+    background-color 0.25s,
     transform 0.2s;
-}
-
-.btn-like:hover,
-.btn-dislike:hover {
-  opacity: 0.8;
-  transform: translateY(-1px);
 }
 
 .btn-like {
@@ -269,9 +275,19 @@ body {
   color: white;
 }
 
+.btn-like:hover {
+  background-color: #5bacd6;
+  transform: translateY(-1px);
+}
+
 .btn-dislike {
   background-color: #f2b9ac;
   color: white;
+}
+
+.btn-dislike:hover {
+  background-color: #e8786a;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 1400px) {
