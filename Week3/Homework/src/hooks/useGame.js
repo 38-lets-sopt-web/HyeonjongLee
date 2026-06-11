@@ -15,6 +15,8 @@ export function useGame() {
   const [time, setTime] = useState(LEVEL_CONFIG[1].time);
   const [holeState, setHoleState] = useState(Array(LEVEL_CONFIG[1].size).fill(null));
   const [message, setMessage] = useState("시작 버튼을 누르면 시작합니다.");
+  const [showModal, setShowModal] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
 
   const gameStateRef = useRef("waiting");
   const scoreRef = useRef(0);
@@ -23,7 +25,7 @@ export function useGame() {
   const timeRef = useRef(LEVEL_CONFIG[1].time);
   const levelRef = useRef(1);
 
-  // 타이머 종료 시 (점수 저장 + alert)
+  // 타이머 종료 시 (점수 저장 + 모달)
   const endGame = () => {
     gameStateRef.current = "waiting";
     setGameState("waiting");
@@ -36,13 +38,24 @@ export function useGame() {
         level: levelRef.current,
         timestamp: new Date().toLocaleString("ko-KR"),
       });
-      records.sort((a, b) => b.score - a.score);
+      // 레벨 내림차순, 같은 레벨에서는 점수 내림차순
+      records.sort((a, b) => {
+        if (b.level !== a.level) return b.level - a.level;
+        return b.score - a.score;
+      });
       localStorage.setItem("mole-records", JSON.stringify(records));
     }
-    alert(`게임 종료!\n 최종 점수: ${scoreRef.current}점\n 리셋 중 ...`);
+
+    setFinalScore(scoreRef.current);
+    setShowModal(true);
   };
 
-  // 중단 버튼 클릭 시 (저장 없이 즉시 초기화)
+  // 모달 확인 버튼
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  // 중단 버튼 - 저장 없이 즉시 초기화
   const handleStop = () => {
     if (gameStateRef.current !== "playing") return;
     gameStateRef.current = "waiting";
@@ -182,9 +195,12 @@ export function useGame() {
     time,
     holeState,
     message,
+    showModal,
+    finalScore,
     handleStart,
     handleStop,
     handleHoleClick,
     handleLevelChange,
+    handleModalClose,
   };
 }

@@ -3,11 +3,19 @@ import { useState } from "react";
 import { color, radius } from "../styles/tokens";
 
 function RankingPage() {
-  const [record, setRecord] = useState(() =>
-    JSON.parse(localStorage.getItem("mole-records") || "[]"),
-  );
+  const [record, setRecord] = useState(() => {
+    const saved = JSON.parse(localStorage.getItem("mole-records") || "[]");
+    // 레벨 내림차순, 같은 레벨에서는 점수 내림차순
+    saved.sort((a, b) => {
+      if (b.level !== a.level) return b.level - a.level;
+      return b.score - a.score;
+    });
+    return saved;
+  });
 
   const handleReset = () => {
+    const confirmed = window.confirm("기록을 초기화하시겠습니까?");
+    if (!confirmed) return;
     localStorage.removeItem("mole-records");
     setRecord([]);
   };
@@ -25,7 +33,7 @@ function RankingPage() {
               <Th>순위</Th>
               <Th>레벨</Th>
               <Th>점수</Th>
-              <Th>기록 시각</Th>
+              <Th>성공 시간</Th>
             </tr>
           </thead>
           <tbody>
@@ -34,12 +42,12 @@ function RankingPage() {
                 <EmptyTd colSpan={4}>기록이 없습니다.</EmptyTd>
               </tr>
             ) : (
-              record.map((record, index) => (
+              record.map((item, index) => (
                 <tr key={index}>
                   <Td>{index + 1}</Td>
-                  <Td>Level {record.level}</Td>
-                  <Td>{record.score}점</Td>
-                  <Td>{record.timestamp}</Td>
+                  <Td>Level {item.level}</Td>
+                  <Td>{item.score}점</Td>
+                  <Td>{item.timestamp}</Td>
                 </tr>
               ))
             )}
@@ -105,6 +113,7 @@ const Td = styled.td`
   font-size: 14px;
   border-bottom: 0.5px solid gray;
 `;
+
 const EmptyTd = styled.td`
   padding: 24px;
   text-align: center;
