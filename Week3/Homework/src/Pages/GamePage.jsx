@@ -5,6 +5,8 @@ import { useGame } from "../hooks/useGame";
 
 function GamePage() {
   const {
+    level,
+    cols,
     score,
     success,
     fail,
@@ -15,6 +17,7 @@ function GamePage() {
     handleStop,
     holeState,
     handleHoleClick,
+    handleLevelChange,
   } = useGame();
 
   return (
@@ -34,6 +37,9 @@ function GamePage() {
           onStop={handleStop}
           holeState={holeState}
           onHoleClick={handleHoleClick}
+          level={level}
+          cols={cols}
+          onLevelChange={handleLevelChange}
         />
       </Wrapper>
     </>
