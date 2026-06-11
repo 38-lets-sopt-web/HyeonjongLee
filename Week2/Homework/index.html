@@ -70,6 +70,10 @@
       </section>
       <section id="table">
         <div class="table-header">
+          <select id="sort-select">
+            <option value="newest">날짜 내림차순</option>
+            <option value="oldest">날짜 오름차순</option>
+          </select>
           <div class="table-buttons">
             <button type="button" id="delete-btn" class="btn-primary">
               선택 삭제
@@ -80,7 +84,9 @@
         <table id="budget-table">
           <thead>
             <tr>
-              <th scope="col"></th>
+              <th scope="col">
+                <input type="checkbox" id="select-all" />
+              </th>
               <th scope="col">제목</th>
               <th scope="col">금액</th>
               <th scope="col">날짜</th>
