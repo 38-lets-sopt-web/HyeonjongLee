@@ -167,6 +167,41 @@
         </form>
       </div>
     </div>
+    <div
+      id="detail-modal"
+      class="modal-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>항목 상세</h3>
+          <button type="button" id="detail-close">✕</button>
+        </div>
+        <div class="detail-body">
+          <div class="detail-item">
+            <span class="detail-label">제목</span>
+            <span id="detail-title"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">금액</span>
+            <span id="detail-amount"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">날짜</span>
+            <span id="detail-date"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">카테고리</span>
+            <span id="detail-category"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">결제수단</span>
+            <span id="detail-pay"></span>
+          </div>
+        </div>
+      </div>
+    </div>
     <script type="module" src="index.js"></script>
   </body>
 </html>

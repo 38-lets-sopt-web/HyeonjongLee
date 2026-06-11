@@ -15,7 +15,7 @@ let budgets = JSON.parse(localStorage.getItem("budgets"));
 
 // 날짜 기준 정렬
 function getSortedList(list) {
-  const sorted = list.slice(); 
+  const sorted = list.slice();
   sorted.sort(function (a, b) {
     if (sortSelect.value === "newest") {
       if (a.date > b.date) return -1;
@@ -66,7 +66,7 @@ function renderTable(list) {
 
     tr.innerHTML = `
       <td><input type="checkbox" class="row-check" data-id="${item.id}" /></td>
-      <td>${item.title}</td>
+      <td class="title-link" data-id="${item.id}">${item.title}</td>
       <td class="${amountClass}">${amountText}</td>
       <td>${item.date}</td>
       <td>${item.category}</td>
@@ -76,6 +76,24 @@ function renderTable(list) {
     // 개별 체크박스 변경 시 전체 체크박스 상태 업데이트
     tr.querySelector(".row-check").addEventListener("change", function () {
       updateSelectAll();
+    });
+
+    // 제목 클릭 시 세부 모달 열기
+    tr.querySelector(".title-link").addEventListener("click", function () {
+      const id = Number(this.dataset.id);
+      const found = budgets.find(function (b) {
+        return b.id === id;
+      });
+      if (!found) return;
+
+      document.getElementById("detail-title").textContent = found.title;
+      document.getElementById("detail-amount").textContent =
+        (found.amount >= 0 ? "+" : "") + found.amount.toLocaleString() + "원";
+      document.getElementById("detail-date").textContent = found.date;
+      document.getElementById("detail-category").textContent = found.category;
+      document.getElementById("detail-pay").textContent = found.pay;
+
+      document.getElementById("detail-modal").classList.remove("hidden");
     });
 
     tbody.appendChild(tr);
@@ -183,6 +201,22 @@ document.getElementById("modal").addEventListener("click", function () {
 document.querySelector(".modal-box").addEventListener("click", function (e) {
   e.stopPropagation();
 });
+
+// X버튼 혹은 백드롭 클릭시 모달 닫기
+document.getElementById("detail-close").addEventListener("click", function () {
+  document.getElementById("detail-modal").classList.add("hidden");
+});
+
+document.getElementById("detail-modal").addEventListener("click", function () {
+  document.getElementById("detail-modal").classList.add("hidden");
+});
+
+document
+  .getElementById("detail-modal")
+  .querySelector(".modal-box")
+  .addEventListener("click", function (e) {
+    e.stopPropagation();
+  });
 
 document.getElementById("modal-form").addEventListener("submit", function (e) {
   e.preventDefault();

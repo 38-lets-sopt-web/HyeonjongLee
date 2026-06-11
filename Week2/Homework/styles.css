@@ -271,3 +271,35 @@ button.filter-item {
   height: 40px;
   font-size: 15px;
 }
+
+.title-link {
+  cursor: pointer;
+}
+
+.title-link:hover {
+  text-decoration: underline;
+}
+
+.detail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 14px;
+}
+
+.detail-label {
+  width: 60px;
+  color: #888;
+  flex-shrink: 0;
+}
+
+.detail-item span:last-child {
+  color: #222;
+  font-weight: 500;
+}
