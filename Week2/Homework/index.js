@@ -174,6 +174,16 @@ document.getElementById("modal-close").addEventListener("click", function () {
   document.getElementById("modal").classList.add("hidden");
 });
 
+// 백드롭 클릭 시 모달 닫기
+document.getElementById("modal").addEventListener("click", function () {
+  document.getElementById("modal").classList.add("hidden");
+});
+
+// 모달 내용 클릭 시 버블링 차단
+document.querySelector(".modal-box").addEventListener("click", function (e) {
+  e.stopPropagation();
+});
+
 document.getElementById("modal-form").addEventListener("submit", function (e) {
   e.preventDefault();
   const title = document.getElementById("modal-title").value;
