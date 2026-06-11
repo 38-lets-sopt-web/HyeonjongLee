@@ -70,6 +70,10 @@
       </section>
       <section id="table">
         <div class="table-header">
+          <select id="sort-select">
+            <option value="newest">날짜 내림차순</option>
+            <option value="oldest">날짜 오름차순</option>
+          </select>
           <div class="table-buttons">
             <button type="button" id="delete-btn" class="btn-primary">
               선택 삭제
@@ -80,7 +84,9 @@
         <table id="budget-table">
           <thead>
             <tr>
-              <th scope="col"></th>
+              <th scope="col">
+                <input type="checkbox" id="select-all" />
+              </th>
               <th scope="col">제목</th>
               <th scope="col">금액</th>
               <th scope="col">날짜</th>
@@ -159,6 +165,41 @@
           </div>
           <button type="submit" id="modal-add" class="btn-primary">추가</button>
         </form>
+      </div>
+    </div>
+    <div
+      id="detail-modal"
+      class="modal-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>항목 상세</h3>
+          <button type="button" id="detail-close">✕</button>
+        </div>
+        <div class="detail-body">
+          <div class="detail-item">
+            <span class="detail-label">제목</span>
+            <span id="detail-title"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">금액</span>
+            <span id="detail-amount"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">날짜</span>
+            <span id="detail-date"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">카테고리</span>
+            <span id="detail-category"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">결제수단</span>
+            <span id="detail-pay"></span>
+          </div>
+        </div>
       </div>
     </div>
     <script type="module" src="index.js"></script>

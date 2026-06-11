@@ -5,25 +5,60 @@ const totalAmount = document.getElementById("total-amount");
 const refreshIcon = document.getElementById("refresh-icon");
 const filterApply = document.getElementById("filter-apply-button");
 const filterReset = document.getElementById("filter-reset-button");
+const selectAll = document.getElementById("select-all");
+const sortSelect = document.getElementById("sort-select");
 
 if (!localStorage.getItem("budgets")) {
   localStorage.setItem("budgets", JSON.stringify(data));
 }
 let budgets = JSON.parse(localStorage.getItem("budgets"));
 
+// 날짜 기준 정렬
+function getSortedList(list) {
+  const sorted = list.slice();
+  sorted.sort(function (a, b) {
+    if (sortSelect.value === "newest") {
+      if (a.date > b.date) return -1;
+      if (a.date < b.date) return 1;
+    } else {
+      if (a.date < b.date) return -1;
+      if (a.date > b.date) return 1;
+    }
+    return 0;
+  });
+  return sorted;
+}
+
+// 전체 체크박스 상태 업데이트
+function updateSelectAll() {
+  const checks = tbody.querySelectorAll(".row-check");
+  if (checks.length === 0) {
+    selectAll.checked = false;
+    return;
+  }
+
+  let allChecked = true;
+  for (let i = 0; i < checks.length; i++) {
+    if (!checks[i].checked) {
+      allChecked = false;
+      break;
+    }
+  }
+  selectAll.checked = allChecked;
+}
+
 function renderTable(list) {
-  // tbody 안의 모든 HTML을 지워서 초기화
   tbody.innerHTML = "";
   let total = 0;
 
-  for (let i = 0; i < list.length; i++) {
-    const item = list[i];
+  const sorted = getSortedList(list);
+
+  for (let i = 0; i < sorted.length; i++) {
+    const item = sorted[i];
     const tr = document.createElement("tr");
 
-    // 금액이 양수면 파란색, 음수면 빨간색, 0
     let amountClass = "amount-minus";
     let amountText = item.amount.toLocaleString();
-
     if (item.amount >= 0) {
       amountClass = "amount-plus";
       amountText = "+" + item.amount.toLocaleString();
@@ -31,12 +66,35 @@ function renderTable(list) {
 
     tr.innerHTML = `
       <td><input type="checkbox" class="row-check" data-id="${item.id}" /></td>
-      <td>${item.title}</td>
+      <td class="title-link" data-id="${item.id}">${item.title}</td>
       <td class="${amountClass}">${amountText}</td>
       <td>${item.date}</td>
       <td>${item.category}</td>
       <td>${item.pay}</td>
     `;
+
+    // 개별 체크박스 변경 시 전체 체크박스 상태 업데이트
+    tr.querySelector(".row-check").addEventListener("change", function () {
+      updateSelectAll();
+    });
+
+    // 제목 클릭 시 세부 모달 열기
+    tr.querySelector(".title-link").addEventListener("click", function () {
+      const id = Number(this.dataset.id);
+      const found = budgets.find(function (b) {
+        return b.id === id;
+      });
+      if (!found) return;
+
+      document.getElementById("detail-title").textContent = found.title;
+      document.getElementById("detail-amount").textContent =
+        (found.amount >= 0 ? "+" : "") + found.amount.toLocaleString() + "원";
+      document.getElementById("detail-date").textContent = found.date;
+      document.getElementById("detail-category").textContent = found.category;
+      document.getElementById("detail-pay").textContent = found.pay;
+
+      document.getElementById("detail-modal").classList.remove("hidden");
+    });
 
     tbody.appendChild(tr);
     total = total + item.amount;
@@ -49,9 +107,10 @@ function renderTable(list) {
     totalAmount.textContent = total.toLocaleString();
     totalAmount.className = "amount-minus";
   }
+
+  updateSelectAll();
 }
 
-// 페이지 로드 시 전체 데이터로 테이블 렌더링
 renderTable(budgets);
 
 function getFilteredList() {
@@ -64,15 +123,10 @@ function getFilteredList() {
   for (let i = 0; i < budgets.length; i++) {
     const item = budgets[i];
     if (item.title.indexOf(titleValue) === -1) continue;
-
-    // 유형 필터
     if (typeValue === "income" && item.amount <= 0) continue;
     if (typeValue === "expense" && item.amount >= 0) continue;
-
-    // 카테고리/결제수단
     if (categoryValue !== "all" && item.category !== categoryValue) continue;
     if (payValue !== "all" && item.pay !== payValue) continue;
-
     filtered.push(item);
   }
 
@@ -93,6 +147,19 @@ filterReset.addEventListener("click", function () {
 
 refreshIcon.addEventListener("click", function () {
   location.reload();
+});
+
+// 전체 체크박스 클릭 시 모든 행 체크/해제
+selectAll.addEventListener("change", function () {
+  const checks = tbody.querySelectorAll(".row-check");
+  for (let i = 0; i < checks.length; i++) {
+    checks[i].checked = selectAll.checked;
+  }
+});
+
+// 날짜 정렬 드롭다운 변경 시 즉시 반영
+sortSelect.addEventListener("change", function () {
+  renderTable(getFilteredList());
 });
 
 // 선택 삭제
@@ -116,7 +183,7 @@ document.getElementById("delete-btn").addEventListener("click", function () {
   renderTable(getFilteredList());
 });
 
-// 모달
+// 항목 추가 모달
 document.getElementById("add-btn").addEventListener("click", function () {
   document.getElementById("modal").classList.remove("hidden");
 });
@@ -124,6 +191,32 @@ document.getElementById("add-btn").addEventListener("click", function () {
 document.getElementById("modal-close").addEventListener("click", function () {
   document.getElementById("modal").classList.add("hidden");
 });
+
+// 백드롭 클릭 시 모달 닫기
+document.getElementById("modal").addEventListener("click", function () {
+  document.getElementById("modal").classList.add("hidden");
+});
+
+// 모달 내용 클릭 시 버블링 차단
+document.querySelector(".modal-box").addEventListener("click", function (e) {
+  e.stopPropagation();
+});
+
+// X버튼 혹은 백드롭 클릭시 모달 닫기
+document.getElementById("detail-close").addEventListener("click", function () {
+  document.getElementById("detail-modal").classList.add("hidden");
+});
+
+document.getElementById("detail-modal").addEventListener("click", function () {
+  document.getElementById("detail-modal").classList.add("hidden");
+});
+
+document
+  .getElementById("detail-modal")
+  .querySelector(".modal-box")
+  .addEventListener("click", function (e) {
+    e.stopPropagation();
+  });
 
 document.getElementById("modal-form").addEventListener("submit", function (e) {
   e.preventDefault();
@@ -134,7 +227,6 @@ document.getElementById("modal-form").addEventListener("submit", function (e) {
   const category = document.getElementById("modal-category").value;
   const pay = document.getElementById("modal-pay").value;
 
-  // 빈 값 있으면 함수 종료
   if (
     title === "" ||
     type === "" ||
@@ -152,7 +244,6 @@ document.getElementById("modal-form").addEventListener("submit", function (e) {
     numAmount = -numAmount;
   }
 
-  // 중복 없는 새 id 생성
   let maxId = 0;
   for (let i = 0; i < budgets.length; i++) {
     if (budgets[i].id > maxId) {
@@ -172,7 +263,6 @@ document.getElementById("modal-form").addEventListener("submit", function (e) {
   budgets.push(newItem);
   localStorage.setItem("budgets", JSON.stringify(budgets));
 
-  // 모달 입력 필드 초기화
   document.getElementById("modal-title").value = "";
   document.getElementById("modal-type").value = "";
   document.getElementById("modal-amount").value = "";
